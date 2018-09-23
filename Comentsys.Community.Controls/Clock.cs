@@ -24,6 +24,9 @@ namespace Comentsys.Community.Controls
         private Rectangle _secondHand;
         private Rectangle _minuteHand;
         private Rectangle _hourHand;
+        private Ellipse _secondMiddle;
+        private Ellipse _minuteMiddle;
+        private Ellipse _hourMiddle;
         private int _secondHeight;
         private int _minuteHeight;
         private int _hourHeight;
@@ -43,7 +46,7 @@ namespace Comentsys.Community.Controls
         double radiusX, double radiusY, 
         string path, double thickness)
         {
-            Rectangle element = new Rectangle
+            Rectangle rect = new Rectangle
             {
                 Width = width,
                 Height = height,
@@ -52,13 +55,13 @@ namespace Comentsys.Community.Controls
                 StrokeThickness = thickness,
                 Visibility = Visibility.Collapsed
             };
-            element.SetBinding(Rectangle.FillProperty, new Binding()
+            rect.SetBinding(Rectangle.FillProperty, new Binding()
             {
                 Path = new PropertyPath(path),
                 Mode = BindingMode.TwoWay,
                 Source = this
             });
-            return element;
+            return rect;
         }
 
         /// <summary>
@@ -96,11 +99,12 @@ namespace Comentsys.Community.Controls
         /// <param name="seconds"></param>
         private void SetSecondHand(int seconds)
         {
-            _secondHand.Visibility = (ShowMinuteHand ? 
+            _secondHand.Visibility = (ShowSecondHand ? 
             Visibility.Visible : Visibility.Collapsed);
             _secondHand.RenderTransform = GetTransformGroup(
             seconds * 6,             
             -second_width / 2, -_secondHeight + 4.25);
+            _secondMiddle.Visibility = _secondHand.Visibility;
         }
 
         /// <summary>
@@ -115,6 +119,7 @@ namespace Comentsys.Community.Controls
             _minuteHand.RenderTransform = GetTransformGroup(
             6 * minutes + seconds / 10,
             -minute_width / 2, -_minuteHeight + 4.25);
+            _minuteMiddle.Visibility = _minuteHand.Visibility;
         }
 
         /// <summary>
@@ -130,26 +135,31 @@ namespace Comentsys.Community.Controls
             _hourHand.RenderTransform = GetTransformGroup(
             30 * hours + minutes / 2 + seconds / 120,
             -hour_width / 2, -_hourHeight + 4.25);
+            _hourMiddle.Visibility = _hourHand.Visibility;
         }
 
         /// <summary>
         /// Get Middle
         /// </summary>
-        private Ellipse GetMiddle()
+        /// <param name="diameter"></param>
+        /// <param name="path"></param>
+        /// <param name="visible"></param>
+        /// <returns></returns>
+        private Ellipse GetMiddle(int diameter, string path, bool visible)
         {
-            Ellipse middle = new Ellipse()
+            Ellipse ellipse = new Ellipse()
             {
-                Height = 15, Width = 15,
+                Height = diameter, Width = diameter,
             };
-            middle.SetBinding(Ellipse.FillProperty, new Binding()
+            ellipse.SetBinding(Ellipse.FillProperty, new Binding()
             {
-                Path = new PropertyPath(nameof(SecondHandForeground)),
+                Path = new PropertyPath(path),
                 Mode = BindingMode.TwoWay,
                 Source = this
             });
-            Canvas.SetLeft(middle, (_diameter - 15) / 2);
-            Canvas.SetTop(middle, (_diameter - 15) / 2);
-            return middle;
+            Canvas.SetLeft(ellipse, (_diameter - diameter) / 2);
+            Canvas.SetTop(ellipse, (_diameter - diameter) / 2);
+            return ellipse;
         }
 
         /// <summary>
@@ -167,6 +177,12 @@ namespace Comentsys.Community.Controls
                 Width = _diameter,
                 StrokeThickness = 20
             };
+            rim.SetBinding(Ellipse.FillProperty, new Binding()
+            {
+                Path = new PropertyPath(nameof(Fill)),
+                Mode = BindingMode.TwoWay,
+                Source = this
+            });
             rim.SetBinding(Ellipse.StrokeProperty, new Binding()
             {
                 Path = new PropertyPath(nameof(RimBackground)),
@@ -215,11 +231,16 @@ namespace Comentsys.Community.Controls
             _secondHeight = (int)_diameter / 2 - 20;
             canvas.Children.Add(_hourHand = GetHand(hour_width, _hourHeight,
                 3, 3, nameof(HourHandForeground), 0.6));
+            canvas.Children.Add(_hourMiddle = GetMiddle(
+                12, nameof(HourHandForeground), ShowHourHand));
             canvas.Children.Add(_minuteHand = GetHand(minute_width, _minuteHeight,
                 2, 2, nameof(MinuteHandForeground), 0.6));
+            canvas.Children.Add(_minuteMiddle = GetMiddle(
+                14, nameof(MinuteHandForeground), ShowMinuteHand));
             canvas.Children.Add(_secondHand = GetHand(second_width, _secondHeight,
                 0, 0, nameof(SecondHandForeground), 0));
-            canvas.Children.Add(GetMiddle());
+            canvas.Children.Add(_secondMiddle = GetMiddle(
+                16, nameof(SecondHandForeground), ShowSecondHand));
         }
 
         /// <summary>
@@ -256,6 +277,13 @@ namespace Comentsys.Community.Controls
             _timer.Tick += (object s, object obj) => SetClock();
             _timer.Start();
         }
+
+        /// <summary>
+        /// Fill Property
+        /// </summary>
+        public static readonly DependencyProperty FillProperty =
+        DependencyProperty.Register(nameof(Fill), typeof(Brush),
+        typeof(Clock), new PropertyMetadata(new SolidColorBrush(Colors.Transparent)));
 
         /// <summary>
         /// RimBackground Property
@@ -326,6 +354,15 @@ namespace Comentsys.Community.Controls
         public static readonly DependencyProperty ValueProperty =
         DependencyProperty.Register(nameof(Value), typeof(DateTime),
         typeof(Clock), new PropertyMetadata(DateTime.Now));
+
+        /// <summary>
+        /// Fill
+        /// </summary>
+        public Brush Fill
+        {
+            get => (Brush)GetValue(FillProperty);
+            set => SetValue(FillProperty, value);
+        }
 
         /// <summary>
         /// Rim Background
