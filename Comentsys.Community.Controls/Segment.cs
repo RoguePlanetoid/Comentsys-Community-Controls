@@ -5,6 +5,7 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
@@ -47,35 +48,67 @@ namespace Comentsys.Community.Controls
         private int _count;
 
         /// <summary>
-        /// Add Element
+        /// Add Ellipse
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="left"></param>
-        /// <param name="top"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
         /// <returns></returns>
-        private Rectangle AddElement(string name, 
-        int left, int top, 
-        int width, int height)
+        private Path AddPath(string name, int row, int column)
         {
-            Rectangle rect = new Rectangle()
+            Path path = new Path()
             {
                 Tag = name,
-                Width = width,
-                Height = height,
-                RadiusX = 2,
-                RadiusY = 2
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Data = new EllipseGeometry()
+                {
+                    RadiusX = 8,
+                    RadiusY = 8
+                }
             };
-            rect.SetBinding(Ellipse.FillProperty, new Binding()
+            path.SetBinding(Path.FillProperty, new Binding()
             {
                 Path = new PropertyPath(nameof(Foreground)),
                 Mode = BindingMode.TwoWay,
                 Source = this
             });
-            Canvas.SetLeft(rect, left);
-            Canvas.SetTop(rect, top);
-            return rect;
+            Grid.SetRow(path, row);
+            Grid.SetColumn(path, column);
+            return path;
+        }
+
+        /// <summary>
+        /// Add Path
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
+        /// <param name="margin"></param>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <param name="columnSpan"></param>
+        /// <returns></returns>
+        private Path AddPath(
+            string name, string data,
+            Thickness? margin,
+            int? row, int? column,
+            int? columnSpan)
+        {
+            Path path = XamlReader.Load(
+            $"<Path xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'><Path.Data>{data}</Path.Data></Path>"
+            ) as Path;
+            path.Tag = name;
+            if (margin != null) path.Margin = margin.Value;
+            path.SetBinding(Path.FillProperty, new Binding()
+            {
+                Path = new PropertyPath(nameof(Foreground)),
+                Mode = BindingMode.TwoWay,
+                Source = this
+            });
+            if (row != null) Grid.SetRow(path, row.Value);
+            if (column != null) Grid.SetColumn(path, column.Value);
+            if (columnSpan != null) Grid.SetColumnSpan(path, columnSpan.Value);
+            return path;
         }
 
         /// <summary>
@@ -84,31 +117,52 @@ namespace Comentsys.Community.Controls
         /// <param name="name"></param>
         private void AddSegment(string name)
         {
-            Canvas segment = new Canvas()
+            Thickness margin = new Thickness(8, 0, 8, 0);
+            GridLength auto = new GridLength(100, GridUnitType.Auto);
+            GridLength star = new GridLength(100, GridUnitType.Star);
+            Grid segment = new Grid()
             {
                 Margin = new Thickness(2),
                 Tag = name,
-                Height = 50,
-                Width = 25
+                Height = 188,
+                Width = 86,
             };
-            segment.Children.Add(AddElement($"{name}.a", 
-            width, 0, height, width));
-            segment.Children.Add(AddElement($"{name}.h", 
-            width + width + width, width + width + width, width, width));
-            segment.Children.Add(AddElement($"{name}.f", 
-            0, width, width, height));
-            segment.Children.Add(AddElement($"{name}.b", 
-            height + width, width, width, height));
-            segment.Children.Add(AddElement($"{name}.g", 
-            width, height + width, height, width));
-            segment.Children.Add(AddElement($"{name}.e", 
-            0, height + width + width, width, height));
-            segment.Children.Add(AddElement($"{name}.c", 
-            height + width, height + width + width, width, height));
-            segment.Children.Add(AddElement($"{name}.i", 
-            width + width + width, height + width + width + width + width, width, width));
-            segment.Children.Add(AddElement($"{name}.d", 
-            width, height + height + width + width, height, width));
+            // Columns
+            segment.ColumnDefinitions.Add(new ColumnDefinition() { Width = auto });
+            segment.ColumnDefinitions.Add(new ColumnDefinition() { Width = star });
+            segment.ColumnDefinitions.Add(new ColumnDefinition() { Width = auto });
+            // Rows
+            segment.RowDefinitions.Add(new RowDefinition() { Height = auto });
+            segment.RowDefinitions.Add(new RowDefinition() { Height = star });
+            segment.RowDefinitions.Add(new RowDefinition() { Height = auto });
+            segment.RowDefinitions.Add(new RowDefinition() { Height = star });
+            segment.RowDefinitions.Add(new RowDefinition() { Height = auto });
+            // Paths
+            segment.Children.Add(AddPath($"{name}.a",
+            "M 6,0 64,0, 70,6 60,16 10,16 0,6 z",
+            margin, 0, null, 3));
+            segment.Children.Add(AddPath($"{name}.h",
+            1, 1));
+            segment.Children.Add(AddPath($"{name}.f",
+            "M 6,0 16,10 16,60 6,70 0,64 0,6 z",
+            null, 1, 0, null));
+            segment.Children.Add(AddPath($"{name}.b",
+            "M 0,10 10,0 16,8 16,64 10,70 0,60 0,10 0,16 z",
+            null, 1, 3, null));
+            segment.Children.Add(AddPath($"{name}.g",
+            "M 8,0 60,0,68,8 60,16 8,16 0,8 z",
+            margin, 2, null, 3));
+            segment.Children.Add(AddPath($"{name}.e",
+            "M 6,0 16,10 16,60 6,70 0,64 0,6 z",
+            null, 3, 0, null));
+            segment.Children.Add(AddPath($"{name}.c",
+            "M 0,10 10,0 16,8 16,64 10,70 0,60 0,10 0,16 z",
+            null, 3, 3, null));
+            segment.Children.Add(AddPath($"{name}.i",
+            3, 1));
+            segment.Children.Add(AddPath($"{name}.d",
+            "M 10,0 60,0 70,10 64,16 6,16 0,10 z",
+            margin, 4, null, 3));
             _panel.Children.Add(segment);
         }
 
@@ -117,9 +171,9 @@ namespace Comentsys.Community.Controls
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        private Canvas SetSegment(string name)
+        private Grid SetSegment(string name)
         {
-            return _panel.Children.Cast<Canvas>()
+            return _panel.Children.Cast<Grid>()
             .FirstOrDefault(f => (string)f.Tag == name);
         }
 
@@ -129,9 +183,9 @@ namespace Comentsys.Community.Controls
         /// <param name="layout"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        private Rectangle SetElement(Canvas layout, string name)
+        private Path SetElement(Grid layout, string name)
         {
-            return layout.Children.Cast<Rectangle>()
+            return layout.Children.Cast<Path>()
             .FirstOrDefault(f => (string)f.Tag == name);
         }
 
@@ -142,7 +196,7 @@ namespace Comentsys.Community.Controls
         /// <param name="digit"></param>
         private void SetItem(string name, int digit)
         {
-            Canvas layout = SetSegment(name);
+            Grid layout = SetSegment(name);
             byte[] values = this.layout[digit];
             SetElement(layout, $"{name}.a").Opacity = values[0];
             SetElement(layout, $"{name}.b").Opacity = values[1];
@@ -176,7 +230,7 @@ namespace Comentsys.Community.Controls
             {
                 string val = array[item].ToString();
                 int digit = none;
-                switch(val)
+                switch (val)
                 {
                     case " ":
                         digit = none;
