@@ -48,6 +48,18 @@ namespace Comentsys.Community.Controls
         private int _count;
 
         /// <summary>
+        /// Get Geometry
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private static Geometry GetGeometry(string data)
+        {
+            return (Geometry)XamlReader.Load(
+            $"<Geometry xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>{data}</Geometry>"
+            );
+        }
+
+        /// <summary>
         /// Add Ellipse
         /// </summary>
         /// <param name="name"></param>
@@ -94,10 +106,11 @@ namespace Comentsys.Community.Controls
             int? row, int? column,
             int? columnSpan)
         {
-            Path path = XamlReader.Load(
-            $"<Path xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'><Path.Data>{data}</Path.Data></Path>"
-            ) as Path;
-            path.Tag = name;
+            Path path = new Path
+            {
+                Tag = name,
+                Data = GetGeometry(data)
+            };
             if (margin != null) path.Margin = margin.Value;
             path.SetBinding(Path.FillProperty, new Binding()
             {
