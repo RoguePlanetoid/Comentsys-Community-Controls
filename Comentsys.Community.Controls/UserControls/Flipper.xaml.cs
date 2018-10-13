@@ -8,7 +8,7 @@ namespace Comentsys.Community.Controls.UserControls
     /// <summary>
     /// Flipper Control
     /// </summary>
-    internal sealed partial class Flipper : UserControl
+    public sealed partial class Flipper : UserControl
     {
         /// <summary>
         /// Update
