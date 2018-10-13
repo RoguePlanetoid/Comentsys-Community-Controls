@@ -143,7 +143,7 @@ namespace Comentsys.Community.Controls
         /// </summary>
         public static readonly DependencyProperty ForegroundProperty =
         DependencyProperty.Register(nameof(Foreground), typeof(Brush),
-        typeof(Split), new PropertyMetadata(new SolidColorBrush(Colors.Green)));
+        typeof(Split), new PropertyMetadata(new SolidColorBrush(Colors.White)));
 
         /// <summary>
         /// SourceProperty
