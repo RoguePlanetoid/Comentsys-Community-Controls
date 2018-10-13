@@ -20,8 +20,8 @@ namespace Comentsys.Community.Controls
         private const double dial_min = 0;
         private const double dial_max = 360;
 
-        private static Grid _dial;
-        private static Grid _knob;
+        private Grid _dial;
+        private Grid _knob;
         private bool _hasCapture = false;
 
         /// <summary>

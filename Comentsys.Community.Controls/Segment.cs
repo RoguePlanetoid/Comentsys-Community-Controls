@@ -44,7 +44,6 @@ namespace Comentsys.Community.Controls
         private const string time_date_format = "HH:mm:ss dd-MM-yyyy";
 
         private DispatcherTimer _timer = new DispatcherTimer();
-        private StackPanel _panel;
         private int _count;
 
         /// <summary>
@@ -176,7 +175,7 @@ namespace Comentsys.Community.Controls
             segment.Children.Add(AddPath($"{name}.d",
             "M 10,0 60,0 70,10 64,16 6,16 0,10 z",
             margin, 4, null, 3));
-            _panel.Children.Add(segment);
+            ContentPanel.Children.Add(segment);
         }
 
         /// <summary>
@@ -186,7 +185,7 @@ namespace Comentsys.Community.Controls
         /// <returns></returns>
         private Grid SetSegment(string name)
         {
-            return _panel.Children.Cast<Grid>()
+            return ContentPanel.Children.Cast<Grid>()
             .FirstOrDefault(f => (string)f.Tag == name);
         }
 
@@ -232,7 +231,7 @@ namespace Comentsys.Community.Controls
             List<int> list = Enumerable.Range(0, length).ToList();
             if (_count != length)
             {
-                _panel.Children.Clear();
+                ContentPanel.Children.Clear();
                 foreach (int item in list)
                 {
                     AddSegment(item.ToString());
@@ -288,18 +287,23 @@ namespace Comentsys.Community.Controls
         }
 
         /// <summary>
+        /// Content Panel
+        /// </summary>
+        internal StackPanel ContentPanel { get; set; }
+
+        /// <summary>
         /// Segment Control
         /// </summary>
         public Segment()
         {
-            _panel = new StackPanel()
+            ContentPanel = new StackPanel()
             {
                 Spacing = 10,
                 Orientation = Orientation.Horizontal
             };
             Viewbox viewbox = new Viewbox()
             {
-                Child = _panel
+                Child = ContentPanel
             };
             this.Children.Add(viewbox);
             SetValue();
