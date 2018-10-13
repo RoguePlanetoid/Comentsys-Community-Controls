@@ -27,8 +27,6 @@ namespace Comentsys.Community.Controls
         private const string name_left = "Left";
         private const string name_right = "Right";
 
-        private Grid _grid;
-
         // <summary>
         /// Get Geometry
         /// </summary>
@@ -80,7 +78,7 @@ namespace Comentsys.Community.Controls
         /// <param name="columnspan"></param>
         /// <param name="vertical"></param>
         /// <param name="horizontal"></param>
-        private void AddPath(ref Grid grid,
+        private void AddPath(Grid grid,
             string name, string value,
             int row, int column,
             int? rowspan, int? columnspan,
@@ -115,31 +113,36 @@ namespace Comentsys.Community.Controls
         /// </summary>
         private void GetLayout()
         {
-            _grid = new Grid()
+            ContentGrid = new Grid()
             {
                 Height = 180,
                 Width = 180
             };
-            _grid.ColumnDefinitions.Clear();
-            _grid.RowDefinitions.Clear();
+            ContentGrid.ColumnDefinitions.Clear();
+            ContentGrid.RowDefinitions.Clear();
             for (int index = 0; (index < size); index++)
             {
-                _grid.RowDefinitions.Add(new RowDefinition()
+                ContentGrid.RowDefinitions.Add(new RowDefinition()
                 {
                     Height = (index == 1) ? GridLength.Auto : 
                     new GridLength(100, GridUnitType.Star)
                 });
-                _grid.ColumnDefinitions.Add(new ColumnDefinition()
+                ContentGrid.ColumnDefinitions.Add(new ColumnDefinition()
                 {
                     Width = (index == 1) ? GridLength.Auto : 
                     new GridLength(100, GridUnitType.Star)
                 });
             }
-            AddPath(ref _grid, "Up", path_up, 0, 1, 2, null, VerticalAlignment.Top, null);
-            AddPath(ref _grid, "Down", path_down, 1, 1, 2, null, VerticalAlignment.Bottom, null);
-            AddPath(ref _grid, "Left", path_left, 1, 0, null, 2, null, HorizontalAlignment.Left);
-            AddPath(ref _grid, "Right", path_right, 1, 1, null, 2, null, HorizontalAlignment.Right);
+            AddPath(ContentGrid, name_up, path_up, 0, 1, 2, null, VerticalAlignment.Top, null);
+            AddPath(ContentGrid, name_down, path_down, 1, 1, 2, null, VerticalAlignment.Bottom, null);
+            AddPath(ContentGrid, name_left, path_left, 1, 0, null, 2, null, HorizontalAlignment.Left);
+            AddPath(ContentGrid, name_right, path_right, 1, 1, null, 2, null, HorizontalAlignment.Right);
         }
+
+        /// <summary>
+        /// Content Grid
+        /// </summary>
+        internal Grid ContentGrid { get; set; }
 
         /// <summary>
         /// Direct Control
@@ -149,7 +152,7 @@ namespace Comentsys.Community.Controls
             GetLayout();
             Viewbox viewbox = new Viewbox()
             {
-                Child = _grid
+                Child = ContentGrid
             };
             this.Children.Add(viewbox);
         }

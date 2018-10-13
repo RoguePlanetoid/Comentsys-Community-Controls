@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -160,7 +158,6 @@ namespace Comentsys.Community.Controls
         private const string time_date_format = "HH:mm:ss dd-MM-yyyy";
 
         private DispatcherTimer _timer = new DispatcherTimer();
-        private StackPanel _panel;
         private int _count;
 
         /// <summary>
@@ -219,7 +216,7 @@ namespace Comentsys.Community.Controls
                 x = 0;
                 y = (y + size + padding);
             }
-            _panel.Children.Add(canvas);
+            ContentPanel.Children.Add(canvas);
         }
 
         /// <summary>
@@ -241,7 +238,7 @@ namespace Comentsys.Community.Controls
         /// <returns></returns>
         private Canvas SetSection(string name)
         {
-            return _panel.Children.Cast<Canvas>()
+            return ContentPanel.Children.Cast<Canvas>()
             .FirstOrDefault(f => (string)f.Tag == name);
         }
 
@@ -271,7 +268,7 @@ namespace Comentsys.Community.Controls
             List<int> list = Enumerable.Range(0, length).ToList();
             if (_count != length)
             {
-                _panel.Children.Clear();
+                ContentPanel.Children.Clear();
                 foreach (int item in list)
                 {
                     AddSection(item.ToString());
@@ -310,18 +307,23 @@ namespace Comentsys.Community.Controls
         }
 
         /// <summary>
+        /// Content Panel
+        /// </summary>
+        internal StackPanel ContentPanel { get; set; }
+
+        /// <summary>
         /// Matrix Control
         /// </summary>
         public Matrix()
         {
-            _panel = new StackPanel()
+            ContentPanel = new StackPanel()
             {
                 Spacing = 0,
                 Orientation = Orientation.Horizontal
             };
             Viewbox viewbox = new Viewbox()
             {
-                Child = _panel
+                Child = ContentPanel
             };
             this.Children.Add(viewbox);
             SetValue();

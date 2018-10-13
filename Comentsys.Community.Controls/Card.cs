@@ -74,8 +74,6 @@ namespace Comentsys.Community.Controls
             new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // 13
         };
 
-        private static Grid _grid = null;
-
         /// <summary>
         /// Get Geometry
         /// </summary>
@@ -374,7 +372,7 @@ namespace Comentsys.Community.Controls
         /// <param name="name"></param>
         /// <param name="number"></param>
         /// <returns></returns>
-        private static void SetCard(string name, int number)
+        private static void SetCard(Grid grid, string name, int number)
         {
             int index = (number % 13);
             string suit = club;
@@ -395,29 +393,29 @@ namespace Comentsys.Community.Controls
             }
             Color color = (suit == heart || suit == diamond) ? Colors.Red : Colors.Black;
             string value = card_values[index];
-            SetItem(ref _grid, suit, color, value, $"{name}.{top_left}");
-            SetItem(ref _grid, suit, color, value, $"{name}.{bottom_left}");
-            SetItem(ref _grid, suit, color, value, $"{name}.{bottom_right}");
-            SetItem(ref _grid, suit, color, value, $"{name}.{top_right}");
+            SetItem(ref grid, suit, color, value, $"{name}.{top_left}");
+            SetItem(ref grid, suit, color, value, $"{name}.{bottom_left}");
+            SetItem(ref grid, suit, color, value, $"{name}.{bottom_right}");
+            SetItem(ref grid, suit, color, value, $"{name}.{top_right}");
             int[] values = layout[index];
-            SetPath(ref _grid, suit, color, values[0], $"{name}.a");
-            SetPath(ref _grid, suit, color, values[1], $"{name}.b");
-            SetPath(ref _grid, suit, color, values[2], $"{name}.c");
-            SetPath(ref _grid, suit, color, values[3], $"{name}.d");
-            SetPath(ref _grid, suit, color, values[4], $"{name}.e");
-            SetPath(ref _grid, suit, color, values[5], $"{name}.f");
-            SetPath(ref _grid, suit, color, values[6], $"{name}.g");
-            SetPath(ref _grid, suit, color, values[7], $"{name}.h");
-            SetPath(ref _grid, suit, color, values[8], $"{name}.i");
-            SetPath(ref _grid, suit, color, values[9], $"{name}.j");
-            SetPath(ref _grid, suit, color, values[10], $"{name}.k");
-            SetPath(ref _grid, suit, color, values[11], $"{name}.l");
-            SetPath(ref _grid, suit, color, values[12], $"{name}.m");
-            SetPath(ref _grid, suit, color, values[13], $"{name}.n");
-            SetPath(ref _grid, suit, color, values[14], $"{name}.o");
-            SetPath(ref _grid, suit, color, values[15], $"{name}.p");
-            SetPath(ref _grid, suit, color, values[16], $"{name}.q");
-            SetText(ref _grid, color, value, values[17], $"{name}.r");
+            SetPath(ref grid, suit, color, values[0], $"{name}.a");
+            SetPath(ref grid, suit, color, values[1], $"{name}.b");
+            SetPath(ref grid, suit, color, values[2], $"{name}.c");
+            SetPath(ref grid, suit, color, values[3], $"{name}.d");
+            SetPath(ref grid, suit, color, values[4], $"{name}.e");
+            SetPath(ref grid, suit, color, values[5], $"{name}.f");
+            SetPath(ref grid, suit, color, values[6], $"{name}.g");
+            SetPath(ref grid, suit, color, values[7], $"{name}.h");
+            SetPath(ref grid, suit, color, values[8], $"{name}.i");
+            SetPath(ref grid, suit, color, values[9], $"{name}.j");
+            SetPath(ref grid, suit, color, values[10], $"{name}.k");
+            SetPath(ref grid, suit, color, values[11], $"{name}.l");
+            SetPath(ref grid, suit, color, values[12], $"{name}.m");
+            SetPath(ref grid, suit, color, values[13], $"{name}.n");
+            SetPath(ref grid, suit, color, values[14], $"{name}.o");
+            SetPath(ref grid, suit, color, values[15], $"{name}.p");
+            SetPath(ref grid, suit, color, values[16], $"{name}.q");
+            SetText(ref grid, color, value, values[17], $"{name}.r");
         }
 
         /// <summary>
@@ -426,18 +424,23 @@ namespace Comentsys.Community.Controls
         /// <param name="obj">Object</param>
         /// <param name="e">Event Args</param>
         private static void Update(DependencyObject obj,
-        DependencyPropertyChangedEventArgs e) => 
-        SetCard(name_card, (int)e.NewValue);
+        DependencyPropertyChangedEventArgs e)
+        => SetCard(((Card)obj).ContentGrid, name_card, (int)e.NewValue);
+
+        /// <summary>
+        /// Content Grid
+        /// </summary>
+        internal Grid ContentGrid { get; set; }
 
         /// <summary>
         /// Card Control
         /// </summary>
         public Card()
         {
-            _grid = GetCard(name_card);
+            ContentGrid = GetCard(name_card);
             Viewbox viewbox = new Viewbox()
             {
-                Child = _grid
+                Child = ContentGrid
             };
             this.Children.Add(viewbox);
         }
