@@ -28,8 +28,6 @@ namespace Comentsys.Community.Controls
             new byte[] { 1, 0, 1, 1, 0, 1, 1, 0, 1 }, // 6
         }; // Dice Layout
 
-        private static Grid _grid = null;
-
         /// <summary>
         /// Add
         /// </summary>
@@ -50,19 +48,20 @@ namespace Comentsys.Community.Controls
             });
             element.SetValue(Grid.ColumnProperty, column);
             element.SetValue(Grid.RowProperty, row);
-            _grid.Children.Add(element);
+            ContentGrid.Children.Add(element);
         }
 
         /// <summary>
         /// Set
         /// </summary>
+        /// <param name="grid">Grid</param>
         /// <param name="row">Row</param>
         /// <param name="column">Column</param>
         /// <param name="opacity">Opacity</param>
-        private static void Set(int row, int column, byte opacity)
+        private static void Set(Grid grid, int row, int column, byte opacity)
         {
             Ellipse ellipse =
-            _grid.Children.Cast<Ellipse>().FirstOrDefault(f =>
+            grid.Children.Cast<Ellipse>().FirstOrDefault(f =>
             Grid.GetRow(f) == row && Grid.GetColumn(f) == column);
             if (ellipse != null) ellipse.Opacity = opacity;
         }
@@ -75,23 +74,29 @@ namespace Comentsys.Community.Controls
         private static void Update(DependencyObject obj,
         DependencyPropertyChangedEventArgs e)
         {
+            Dice dice = (Dice)obj;
             int count = 0;
             for (int row = 0; row < size; row++)
             {
                 for (int column = 0; column < size; column++)
                 {
-                    Set(row, column, layout[(int)e.NewValue][count]);
+                    Set(dice.ContentGrid, row, column, layout[(int)e.NewValue][count]);
                     count++;
                 }
             }
         }
 
         /// <summary>
+        /// Content Grid
+        /// </summary>
+        internal Grid ContentGrid { get; set; }
+
+        /// <summary>
         /// Dice Control
         /// </summary>
         public Dice()
         {
-            _grid = new Grid()
+            ContentGrid = new Grid()
             {
                 Width = 100,
                 Height = 100,
@@ -100,8 +105,8 @@ namespace Comentsys.Community.Controls
             // Setup Grid Layout
             for (int index = 0; index < size; index++)
             {
-                _grid.RowDefinitions.Add(new RowDefinition());
-                _grid.ColumnDefinitions.Add(new ColumnDefinition());
+                ContentGrid.RowDefinitions.Add(new RowDefinition());
+                ContentGrid.ColumnDefinitions.Add(new ColumnDefinition());
             }
             for (int row = 0; row < size; row++)
             {
@@ -112,7 +117,7 @@ namespace Comentsys.Community.Controls
             }
             Viewbox viewbox = new Viewbox()
             {
-                Child = _grid
+                Child = ContentGrid
             };
             this.Children.Add(viewbox);
         }
