@@ -177,7 +177,7 @@ namespace Comentsys.Community.Controls
         /// </summary>
         private readonly DependencyProperty HoleProperty =
         DependencyProperty.Register(nameof(Hole), typeof(double),
-        typeof(Stack), new PropertyMetadata(25, UpdateHole));
+        typeof(Stack), new PropertyMetadata(25.0, UpdateHole));
 
         /// <summary>
         /// Values Property
