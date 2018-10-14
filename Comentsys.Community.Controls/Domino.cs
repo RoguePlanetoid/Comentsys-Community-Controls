@@ -45,9 +45,6 @@ namespace Comentsys.Community.Controls
             new int[] { 1, 0, 1, 1, 0, 1, 1, 0, 1 }, // 6
         }; // Section Layout
 
-        private static Grid _grid = null;
-        private static StackPanel _panel = null;
-
         /// <summary>
         /// Add
         /// </summary>
@@ -149,9 +146,9 @@ namespace Comentsys.Community.Controls
         /// </summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
-        private static void SetPortion(string name, int value)
+        private static void SetPortion(StackPanel panel, string name, int value)
         {
-            Grid portion = Get<Grid, StackPanel>(ref _panel, name);
+            Grid portion = Get<Grid, StackPanel>(ref panel, name);
             int[] values = layout[value];
             Get<Ellipse, Grid>(ref portion, $"{name}.a").Opacity = values[0];
             Get<Ellipse, Grid>(ref portion, $"{name}.b").Opacity = values[1];
@@ -168,15 +165,15 @@ namespace Comentsys.Community.Controls
         /// Set Domino
         /// </summary>
         /// <param name="tile"></param>
-        private static void SetDomino(string tile)
+        private static void SetDomino(StackPanel panel, string tile)
         {
-            SetPortion(name_upper, 0);
-            SetPortion(name_lower, 0);
+            SetPortion(panel, name_upper, 0);
+            SetPortion(panel, name_lower, 0);
             string[] values = tile.Split(',');
             int upper = int.Parse(values[0]);
             int lower = int.Parse(values[1]);
-            SetPortion(name_upper, upper);
-            SetPortion(name_lower, lower);
+            SetPortion(panel, name_upper, upper);
+            SetPortion(panel, name_lower, lower);
         }
 
         /// <summary>
@@ -187,22 +184,32 @@ namespace Comentsys.Community.Controls
         private static void Update(DependencyObject obj,
         DependencyPropertyChangedEventArgs e)
         {
-            SetDomino(tiles[(int)e.NewValue]);
+            SetDomino(((Domino)obj).ContentPanel, tiles[(int)e.NewValue]);
         }
+
+        /// <summary>
+        /// Content Grid
+        /// </summary>
+        internal Grid ContentGrid { get; set; }
+
+        /// <summary>
+        /// Content Panel
+        /// </summary>
+        internal StackPanel ContentPanel { get; set; }
 
         /// <summary>
         /// Domino Control
         /// </summary>
         public Domino()
         {
-            _grid = new Grid()
+            ContentGrid = new Grid()
             {
                 Padding = new Thickness(5)
             };
-            _grid.Children.Add(_panel = AddDomino());
+            ContentGrid.Children.Add(ContentPanel = AddDomino());
             Viewbox viewbox = new Viewbox()
             {
-                Child = _grid
+                Child = ContentGrid
             };
             this.Children.Add(viewbox);
         }
