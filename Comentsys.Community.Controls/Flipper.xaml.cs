@@ -1,14 +1,12 @@
-﻿using Windows.UI;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 
-namespace Comentsys.Community.Controls.UserControls
+namespace Comentsys.Community.Controls
 {
     /// <summary>
     /// Flipper Control
     /// </summary>
-    public sealed partial class Flipper : UserControl
+    internal sealed partial class Flipper : UserControl
     {
         /// <summary>
         /// Update
