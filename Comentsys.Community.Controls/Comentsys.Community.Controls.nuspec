@@ -2,14 +2,22 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>0.4.0</version>
+    <version>0.5.5</version>
     <title>$title$</title>
     <authors>RoguePlanetoid</authors>
     <owners>$author$</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Universal Windows Platform Controls Collection</description>
-    <releaseNotes>Initial Release</releaseNotes>
+    <releaseNotes>Beta Release</releaseNotes>
     <copyright>Copyright 2018</copyright>
     <tags>UWP Controls</tags>
   </metadata>
+  <files>
+    <file src="bin\$configuration$\*.dll" target="lib\uap10.0\" />
+    <file src="bin\$configuration$\*.pdb" target="lib\uap10.0\" />
+    <file src="bin\$configuration$\*.pri" target="lib\uap10.0\" />
+    <file src="bin\$configuration$\$id$\*.xr.xml" target="lib\uap10.0\$id$\" />
+    <file src="bin\$configuration$\$id$\*.xbf" target="lib\uap10.0\$id$\" />
+    <file src="bin\$configuration$\$id$\*.xaml" target="lib\uap10.0\$id$\" />
+  </files>
 </package>
