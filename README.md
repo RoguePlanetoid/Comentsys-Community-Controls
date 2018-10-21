@@ -153,7 +153,7 @@ Dial dial = new Dial()
     Height = 200,
     Width = 200,
     DialBackground = new SolidColorBrush(Colors.WhiteSmoke),
-    DialForeground= new SolidColorBrush(Colors.Blue),
+    DialForeground= new SolidColorBrush(Colors.Blue)
 };
 ```
 
@@ -208,6 +208,206 @@ Segment segment = new Segment()
 {
     Height = 100,
     Foreground = new SolidColorBrush(Colors.PaleVioletRed),
-    Source = Segment.Sources.TimeDate,
+    Source = Segment.Sources.TimeDate
+};
+```
+
+## Card
+
+Card control can be used to display various Playing Cards for Card-based games like Blackjack, Poker and more
+
+### Syntax
+
+```xaml
+<Page ...
+     xmlns:comentsys="using:Comentsys.Community.Controls"/>
+
+<comentsys:Card Width="120" Value="8"/>
+```
+
+### Output
+
+![Segment Control](Resources/Card.png)
+
+### Properties
+
+| Property | Type | Description |
+| -- | -- | -- |
+| Fill | Brush | Gets or sets the fill colour of the card |
+| Value | int | Gets the value shown by the card between 0 and 52 where 0 is a blank card. 1-13 is Ace of Clubs to King of Clubs, 14-26 is Ace of Diamonds to King of Diamonds, 27-39 is Ace of Hearts to King of Hearts and 40-52 is Ace of Spaces to King of Spaces |
+
+### Examples
+
+**XAML**
+
+```xaml
+<comentsys:Card Width="120" Value="20"/>
+```
+
+**C#**
+
+```csharp
+Card card = new Card()
+{
+    Width = 120,
+    Value = 20
+};
+```
+
+## Direct
+
+Direct control can be used as an on-screen Directional Pad for XAML-based games
+
+### Syntax
+
+```xaml
+<Page ...
+     xmlns:comentsys="using:Comentsys.Community.Controls"/>
+
+<comentsys:Direct Width="150" Foreground="Black"/>
+```
+
+### Output
+
+![Segment Control](Resources/Direct.png)
+
+### Types
+
+**Direction**
+
+| Value | Description |
+| -- | -- |
+| None | 0 - No Direction |
+| Up | 1 - Up Direction |
+| Down | 2 - Down Direction |
+| Left | 3 - Left Direction |
+| Right | 4 - Right Direction |
+
+### Properties
+
+| Property | Type | Description |
+| -- | -- | -- |
+| Foreground | Brush | Gets or sets the foreground colour of the Direct control |
+| Value | Direction | Gets the Direction Value of the control |
+
+### Events
+
+| Events | Description |
+| -- | -- |
+| ValueChanged | Fires whenever the Value is changed |
+
+### Examples
+
+**XAML**
+
+```xaml
+<comentsys:Direct Width="150" Foreground="Yellow"/>
+```
+
+**C#**
+
+```csharp
+Card card = new Card()
+{
+    Width = 150,
+    Foreground = new SolidColorBrush(Colors.Yellow),
+};
+```
+
+## Domino
+
+Domino control can be used to display various Domino tile values
+
+### Syntax
+
+```xaml
+<Page ...
+     xmlns:comentsys="using:Comentsys.Community.Controls"/>
+
+<comentsys:Domino Width="150" Value="2"/>
+```
+
+### Output
+
+![Segment Control](Resources/Domino.png)
+
+### Properties
+
+| Property | Type | Description |
+| -- | -- | -- |
+| Foreground | Brush | Gets or sets the foreground colour of the domino |
+| Fill | Brush | Gets or sets the fill colour of the domino |
+| Value | int | Gets the value shown by the domino between 0 and 28 where 0 is a blank domino. Dominos that can be displayed are 0 0,0 1,1 1,0 2,1 2,2 2,0 3,1 3,2 3,3 3,0 4,1 4,2 4,3 4,4 4,0 5,1 5,2 5,3 5,4 5,5 5,0 6,1 6,2 6,3 6,4 6,5 6,6 6 |
+
+### Examples
+
+**XAML**
+
+```xaml
+<comentsys:Domino Width="120" Value="10"/>
+```
+
+**C#**
+
+```csharp
+Domino domino = new Domino()
+{
+    Width = 120,
+    Value = 10
+};
+```
+
+## Matrix
+
+Matrix control that can be used to display numbers like a dot-matrix display plus colon, dash and forward-slash character
+
+### Syntax
+
+```xaml
+<Page ...
+     xmlns:comentsys="using:Comentsys.Community.Controls"/>
+
+<comentsys:Matrix Height="250" Foreground="Orange" Source="Time"/>
+```
+
+### Output
+
+![Segment Control](Resources/Matrix.png)
+
+### Types
+
+**Sources**
+
+| Value | Description |
+| -- | -- |
+| Value | Show the provided Value |
+| Time | Show the current Time |
+| Date | Show the current Date |
+| TimeDate | Show the current Time & Date |
+
+### Properties
+
+| Property | Type | Description |
+| -- | -- | -- |
+| Foreground | Brush | Gets or sets the foreground colour of the matrix |
+| Source | Sources | Gets or sets the source of the matrix of Value, Time, Date or TimeDate |
+| Value | string | Gets the value shown by the matrix |
+
+### Examples
+
+**XAML**
+
+```xaml
+<comentsys:Matrix Width="200" Foreground="Green" Source="TimeDate"/>
+```
+
+**C#**
+
+```csharp
+Matrix matrix = new Matrix()
+{
+    Width = 200,
+    Foreground = new SolidColorBrush(Colors.Green),
+    Source = Segment.Sources.TimeDate
 };
 ```
