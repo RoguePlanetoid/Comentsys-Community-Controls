@@ -39,8 +39,6 @@ Dial control that can be used to set a value between a minimum and maximum value
 
 Segment control that can be used to display numbers like a seven-segment display plus colon character
 
-### Syntax
-
 ```xaml
 <Page ...
      xmlns:comentsys="using:Comentsys.Community.Controls"/>
