@@ -269,7 +269,7 @@ Direct control can be used as an on-screen Directional Pad for XAML-based games
 
 ### Output
 
-![Segment Control](Resources/Direct.png)
+![Direct Control](Resources/Direct.png)
 
 ### Types
 
@@ -307,7 +307,7 @@ Direct control can be used as an on-screen Directional Pad for XAML-based games
 **C#**
 
 ```csharp
-Card card = new Card()
+Direct direct = new Direct()
 {
     Width = 150,
     Foreground = new SolidColorBrush(Colors.Yellow),
@@ -372,7 +372,7 @@ Matrix control that can be used to display numbers like a dot-matrix display plu
 
 ### Output
 
-![Segment Control](Resources/Matrix.png)
+![Matrix Control](Resources/Matrix.png)
 
 ### Types
 
@@ -408,6 +408,254 @@ Matrix matrix = new Matrix()
 {
     Width = 200,
     Foreground = new SolidColorBrush(Colors.Green),
+    Source = Matrix.Sources.TimeDate
+};
+```
+
+## Stack
+
+Stack control is a stack-based chart that can be used to display a set of values in the form of horizontal or vertical bars
+
+### Syntax
+
+```xaml
+<Page ...
+     xmlns:comentsys="using:Comentsys.Community.Controls"/>
+
+<comentsys:Stack Height="300" Width="300"/>
+```
+
+### Output
+
+![Stack Control](Resources/Stack.png)
+
+### Types
+
+**ChartItem**
+
+| Property | Type | Description |
+| -- | -- | -- |
+| Brush | Brush | Gets or sets the foreground colour to use for the data item |
+| Value | double | Gets or sets the percentage value of the data item |
+
+### Properties
+
+| Property | Type | Description |
+| -- | -- | -- |
+| Orientation | Orientation | Gets or sets the orientation of the stack chart |
+| Values | List&lt;ChartItem&gt; | Gets or sets list of values shown by the stack chart |
+
+### Examples
+
+**XAML**
+
+```xaml
+<comentsys:Stack Width="200" Height="200"/>
+```
+
+**C#**
+
+```csharp
+Stack stack = new Stack()
+{
+    Width = 200,
+    Height = 200,
+    Values = new List<ChartItem>()
+    {
+        new ChartItem()
+        {
+            Brush = new SolidColorBrush(Colors.Red),
+            Value = 20
+        },
+        new ChartItem()
+        {
+            Brush = new SolidColorBrush(Colors.Green),
+            Value = 40
+        },
+        new ChartItem()
+        {
+            Brush = new SolidColorBrush(Colors.Blue),
+            Value = 60
+        }
+    }
+};
+```
+
+## Donut
+
+Donut control is a donut-based pie-like chart that can be used to display a set of values in the form of arc-like segments
+
+### Syntax
+
+```xaml
+<Page ...
+     xmlns:comentsys="using:Comentsys.Community.Controls"/>
+
+<comentsys:Donut Height="300" Width="300"/>
+```
+
+### Output
+
+![Donut Control](Resources/Donut.png)
+
+### Types
+
+**ChartItem**
+
+| Property | Type | Description |
+| -- | -- | -- |
+| Brush | Brush | Gets or sets the foreground colour to use for the data item |
+| Value | double | Gets or sets the percentage value of the data item |
+
+### Properties
+
+| Property | Type | Description |
+| -- | -- | -- |
+| Hole | double | Gets or sets the size of the hole of the donut chart between 1 and 100 |
+| Values | List&lt;ChartItem&gt; | Gets or sets list of values shown by the stack chart |
+
+### Examples
+
+**XAML**
+
+```xaml
+<comentsys:Donut Width="200" Height="200"/>
+```
+
+**C#**
+
+```csharp
+Donut donut = new Donut()
+{
+    Width = 200,
+    Height = 200,
+    Values = new List<ChartItem>()
+    {
+        new ChartItem()
+        {
+            Brush = new SolidColorBrush(Colors.Red),
+            Value = 20
+        },
+        new ChartItem()
+        {
+            Brush = new SolidColorBrush(Colors.Green),
+            Value = 40
+        },
+        new ChartItem()
+        {
+            Brush = new SolidColorBrush(Colors.Blue),
+            Value = 60
+        }
+    }
+};
+```
+
+## Direct
+
+Direct control can be used as an on-screen Directional Pad for XAML-based games
+
+### Syntax
+
+```xaml
+<Page ...
+     xmlns:comentsys="using:Comentsys.Community.Controls"/>
+
+<comentsys:Stick Radius="100" Width="250" Foreground="Black" Fill="WhiteSmoke"/>
+```
+
+### Output
+
+![Stick Control](Resources/Stick.png)
+
+### Properties
+
+| Property | Type | Description |
+| -- | -- | -- |
+| Foreground | Brush | Gets or sets the foreground colour of the Stick control |
+| Fill | Brush | Gets or sets the fill colour of the Stick control |
+| Radius | int | Gets or sets the radius of the Stick control |
+| Sensitivity | double | Gets or sets the sensitivity of the Stick control |
+| Angle | double | Gets the rotation angle of the Stick control around the centre |
+| Ratio | double | Gets the movement ratio of the Stick control from the centre to the outside edge |
+
+### Events
+
+| Events | Parameters | Description |
+| -- | -- | -- |
+| ValueChanged | double angle, double ratio | Fires whenever the Value is changed with the current angle and ratio values |
+
+### Examples
+
+**XAML**
+
+```xaml
+<comentsys:Stick Radius="100" Width="250" Foreground="Blue" Fill="Yellow"/>
+```
+
+**C#**
+
+```csharp
+Stick stick = new Stick()
+{
+    Radius = 100,
+    Width = 250,
+    Foreground = new SolidColorBrush(Colors.Blue),
+    Fill = new SolidColorBrush(Colors.Yellow),
+};
+```
+
+## Split
+
+Split control that can be used to display numbers like a flip clock or split-flip display including animation for the flipping when values are changed
+
+### Syntax
+
+```xaml
+<Page ...
+     xmlns:comentsys="using:Comentsys.Community.Controls"/>
+
+<comentsys:Split Height="250" Foreground="White" Source="Time"/>
+```
+
+### Output
+
+![Split Control](Resources/Split.png)
+
+### Types
+
+**Sources**
+
+| Value | Description |
+| -- | -- |
+| Value | Show the provided Value |
+| Time | Show the current Time |
+| Date | Show the current Date |
+| TimeDate | Show the current Time & Date |
+
+### Properties
+
+| Property | Type | Description |
+| -- | -- | -- |
+| Foreground | Brush | Gets or sets the foreground colour of the split clock |
+| Source | Sources | Gets or sets the source of the split clock of Value, Time, Date or TimeDate |
+| Value | string | Gets the value shown by the split clock |
+| Orientation | Orientation | Gets the orientation of the split clock |
+
+### Examples
+
+**XAML**
+
+```xaml
+<comentsys:Split Width="500" Foreground="Cyan" Source="TimeDate"/>
+```
+
+**C#**
+
+```csharp
+Split split = new Split()
+{
+    Width = 500,
+    Foreground = new SolidColorBrush(Colors.Cyan),
     Source = Matrix.Sources.TimeDate
 };
 ```
