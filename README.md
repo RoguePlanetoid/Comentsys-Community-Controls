@@ -408,6 +408,6 @@ Matrix matrix = new Matrix()
 {
     Width = 200,
     Foreground = new SolidColorBrush(Colors.Green),
-    Source = Segment.Sources.TimeDate
+    Source = Matrix.Sources.TimeDate
 };
 ```
