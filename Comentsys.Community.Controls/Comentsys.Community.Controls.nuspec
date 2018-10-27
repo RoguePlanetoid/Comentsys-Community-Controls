@@ -2,13 +2,13 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>0.5.5</version>
+    <version>1.0.0</version>
     <title>$title$</title>
     <authors>RoguePlanetoid</authors>
     <owners>$author$</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Universal Windows Platform Controls Collection</description>
-    <releaseNotes>Beta Release</releaseNotes>
+    <releaseNotes>Released Dice, Clock, Dial, Segment, Card, Direct, Domino, Matrix, Stack, Donut, Stick and Split Controls</releaseNotes>
     <copyright>Copyright 2018</copyright>
     <tags>UWP Controls</tags>
   </metadata>
